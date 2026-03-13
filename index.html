@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soluway — AI y automatización para tu negocio</title>
+  <meta name="description" content="Automatizamos tareas, creamos bots y aplicamos inteligencia artificial para que tu negocio trabaje mejor sin contratar más gente." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:  '#2F7D6B',
+            accent:   '#3FA58E',
+            surface:  '#F5FAF8',
+            dark:     '#0F1F1B',
+            muted:    '#6B7C76',
+            border:   '#DCE7E2',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #F5FAF8; color: #0F1F1B; }
+
+    /* Nav link underline animation */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #2F7D6B;
+      transition: width .25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Hamburger */
+    #menu-toggle:checked ~ #mobile-menu { display: block; }
+
+    /* Card hover */
+    .card { transition: transform .2s ease, box-shadow .2s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(47,125,107,.13); }
+
+    /* Counter animation */
+    .count-up { opacity: 0; transform: translateY(10px); transition: opacity .6s ease, transform .6s ease; }
+    .count-up.visible { opacity: 1; transform: none; }
+
+    /* Section fade in */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* Tag badge */
+    .tag { display: inline-block; font-size: .68rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; }
+
+    /* Gradient hero */
+    .hero-bg {
+      background: linear-gradient(135deg, #e8f5f1 0%, #F5FAF8 60%, #d4ede6 100%);
+    }
+
+    /* Posibilidades icon circle */
+    .icon-circle {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: #e8f5f1;
+      color: #2F7D6B;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    /* Star rating */
+    .stars { color: #3FA58E; letter-spacing: 1px; }
+
+    /* Scroll top */
+    #scroll-top {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: #2F7D6B; color: white;
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+      z-index: 99;
+      cursor: pointer;
+    }
+    #scroll-top.show { opacity: 1; pointer-events: auto; }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─────────────────────────────────────────────── -->
+<header id="navbar" class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-border transition-shadow">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-16">
+
+    <!-- Logo -->
+    <a href="#inicio" class="flex items-center gap-2">
+      <img src="assets/logo.png" alt="Soluway" class="h-8 w-auto" />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-dark">
+      <a href="#inicio"       class="nav-link hover:text-primary transition-colors">Inicio</a>
+      <a href="#nosotros"     class="nav-link hover:text-primary transition-colors">Quiénes somos</a>
+      <a href="#posibilidades" class="nav-link hover:text-primary transition-colors">Posibilidades</a>
+      <a href="#proyectos"    class="nav-link hover:text-primary transition-colors">Proyectos</a>
+      <a href="#resultados"   class="nav-link hover:text-primary transition-colors">Resultados</a>
+      <a href="#resenas"      class="nav-link hover:text-primary transition-colors">Reseñas</a>
+      <a href="#contacto" class="bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-accent transition-colors">
+        Hablemos
+      </a>
+    </nav>
+
+    <!-- Mobile hamburger -->
+    <button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-2 cursor-pointer" onclick="toggleMenu()">
+      <span class="ham-line block w-6 h-0.5 bg-dark transition-all duration-300"></span>
+      <span class="ham-line block w-6 h-0.5 bg-dark transition-all duration-300"></span>
+      <span class="ham-line block w-4 h-0.5 bg-dark transition-all duration-300"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-border px-5 py-4 flex flex-col gap-4 text-sm font-medium">
+    <a href="#inicio"        onclick="closeMenu()" class="text-dark hover:text-primary transition-colors">Inicio</a>
+    <a href="#nosotros"      onclick="closeMenu()" class="text-dark hover:text-primary transition-colors">Quiénes somos</a>
+    <a href="#posibilidades" onclick="closeMenu()" class="text-dark hover:text-primary transition-colors">Posibilidades</a>
+    <a href="#proyectos"     onclick="closeMenu()" class="text-dark hover:text-primary transition-colors">Proyectos</a>
+    <a href="#resultados"    onclick="closeMenu()" class="text-dark hover:text-primary transition-colors">Resultados</a>
+    <a href="#resenas"       onclick="closeMenu()" class="text-dark hover:text-primary transition-colors">Reseñas</a>
+    <a href="#contacto"      onclick="closeMenu()" class="bg-primary text-white text-center px-4 py-2.5 rounded-full font-semibold hover:bg-accent transition-colors">Hablemos</a>
+  </div>
+</header>
+
+
+<!-- ─── HERO ──────────────────────────────────────────────── -->
+<section id="inicio" class="hero-bg py-24 md:py-32">
+  <div class="max-w-6xl mx-auto px-5 grid md:grid-cols-2 gap-12 items-center">
+    <div class="fade-in">
+      <span class="tag bg-primary/10 text-primary mb-4">AI · Automatización · Bots</span>
+      <h1 class="text-4xl md:text-5xl font-black text-dark leading-tight mb-5">
+        Tu negocio puede <span class="text-primary">trabajar solo</span> en las tareas de siempre
+      </h1>
+      <p class="text-muted text-lg leading-relaxed mb-8">
+        Automatizamos procesos, creamos bots y aplicamos inteligencia artificial para que vos te enfoques en lo que importa — sin necesitar contratar un equipo de tecnología.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="#contacto" class="bg-primary text-white px-7 py-3.5 rounded-full font-semibold hover:bg-accent transition-colors text-base shadow-sm">
+          Hablemos
+        </a>
+        <a href="#posibilidades" class="border border-primary text-primary px-7 py-3.5 rounded-full font-semibold hover:bg-primary/5 transition-colors text-base">
+          Ver posibilidades
+        </a>
+      </div>
+      <p class="mt-6 text-sm text-muted flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-primary"></i>
+        Sin tecnicismos. Consulta inicial sin cargo.
+      </p>
+    </div>
+
+    <!-- Hero visual -->
+    <div class="fade-in hidden md:flex justify-center">
+      <div class="relative w-80 h-80">
+        <!-- Circles decoration -->
+        <div class="absolute inset-0 rounded-full bg-primary/5"></div>
+        <div class="absolute inset-8 rounded-full bg-primary/8 border border-primary/10"></div>
+        <!-- Center icon -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center gap-3">
+            <i class="fa-solid fa-robot text-5xl text-primary"></i>
+            <span class="text-dark font-bold text-base">Automatizando…</span>
+            <div class="flex gap-1">
+              <span class="w-2 h-2 rounded-full bg-primary animate-bounce" style="animation-delay:0s"></span>
+              <span class="w-2 h-2 rounded-full bg-accent animate-bounce" style="animation-delay:.15s"></span>
+              <span class="w-2 h-2 rounded-full bg-primary/40 animate-bounce" style="animation-delay:.3s"></span>
+            </div>
+          </div>
+        </div>
+        <!-- Floating badges -->
+        <div class="absolute -top-2 right-4 bg-white rounded-xl shadow-md px-3 py-2 flex items-center gap-2 text-xs font-semibold text-dark">
+          <i class="fa-brands fa-whatsapp text-green-500"></i> Bot activo
+        </div>
+        <div class="absolute bottom-4 -left-4 bg-white rounded-xl shadow-md px-3 py-2 flex items-center gap-2 text-xs font-semibold text-dark">
+          <i class="fa-solid fa-bolt text-primary"></i> +12h ahorradas/sem
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── QUIÉNES SOMOS ────────────────────────────────────── -->
+<section id="nosotros" class="py-20 bg-white">
+  <div class="max-w-4xl mx-auto px-5 text-center fade-in">
+    <span class="tag bg-primary/10 text-primary mb-3">Quiénes somos</span>
+    <h2 class="text-3xl md:text-4xl font-bold text-dark mb-5">
+      Tecnología que se adapta a vos, no al revés
+    </h2>
+    <p class="text-muted text-lg leading-relaxed mb-8">
+      En Soluway sabemos que los negocios chicos y medianos muchas veces quedan afuera de las herramientas modernas — no por falta de ganas, sino porque implementarlas parece caro, complicado o exclusivo para empresas grandes.
+    </p>
+    <p class="text-muted text-lg leading-relaxed mb-10">
+      Por eso existimos. Te acercamos el mundo de la inteligencia artificial y la automatización en soluciones concretas, simples y a tu medida. Desde un flujo de trabajo automático hasta un agente de AI que atiende a tus clientes: lo hacemos funcionar, lo explicamos sin tecnicismos y lo ajustamos a lo que necesitás.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+      <div class="bg-surface rounded-2xl p-5 border border-border">
+        <div class="icon-circle mb-3"><i class="fa-solid fa-bullseye"></i></div>
+        <h3 class="font-bold text-dark mb-1">Claridad</h3>
+        <p class="text-sm text-muted">Sin tecnicismos. Te contamos qué hacemos, por qué y cuánto mejora tu día a día.</p>
+      </div>
+      <div class="bg-surface rounded-2xl p-5 border border-border">
+        <div class="icon-circle mb-3"><i class="fa-solid fa-bolt"></i></div>
+        <h3 class="font-bold text-dark mb-1">Velocidad</h3>
+        <p class="text-sm text-muted">Soluciones que se implementan rápido y empiezan a funcionar desde el primer día.</p>
+      </div>
+      <div class="bg-surface rounded-2xl p-5 border border-border">
+        <div class="icon-circle mb-3"><i class="fa-solid fa-chart-line"></i></div>
+        <h3 class="font-bold text-dark mb-1">Impacto real</h3>
+        <p class="text-sm text-muted">No prometemos tecnología. Prometemos tiempo recuperado y procesos que funcionan solos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── POSIBILIDADES ────────────────────────────────────── -->
+<section id="posibilidades" class="py-20 bg-surface">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-12 fade-in">
+      <span class="tag bg-primary/10 text-primary mb-3">¿Qué podemos hacer por tu negocio?</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+        Ejemplos de lo que es posible hoy
+      </h2>
+      <p class="text-muted text-lg max-w-2xl mx-auto">
+        No hace falta ser una empresa grande. Con las herramientas correctas, cualquier negocio puede automatizar tareas que hoy hacen a mano.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- 1 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle bg-green-50"><i class="fa-brands fa-whatsapp text-green-500"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Bot de WhatsApp</h3>
+            <p class="text-sm text-muted leading-relaxed">Respondé preguntas frecuentes, agendá turnos o enviá información de tus productos automáticamente — las 24 hs, sin estar pegado al teléfono.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Atención al cliente</span>
+          <span class="tag bg-surface text-muted border border-border">Turnos</span>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle"><i class="fa-solid fa-file-invoice"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Presupuestos automáticos</h3>
+            <p class="text-sm text-muted leading-relaxed">El cliente completa un formulario y recibe su presupuesto personalizado al instante. Sin ir y venir, sin errores de cálculo.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Ventas</span>
+          <span class="tag bg-surface text-muted border border-border">Comercios</span>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle"><i class="fa-solid fa-envelope-open-text"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Emails que se responden solos</h3>
+            <p class="text-sm text-muted leading-relaxed">Clasificá, respondé y derivá emails según el tema sin tocarlos. El sistema detecta la intención y actúa.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Email</span>
+          <span class="tag bg-surface text-muted border border-border">Soporte</span>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle"><i class="fa-solid fa-chart-bar"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Reporte diario sin planillas</h3>
+            <p class="text-sm text-muted leading-relaxed">Tus ventas, pedidos o métricas del día llegan solos a tu WhatsApp o email cada mañana. Cero trabajo manual.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Reportes</span>
+          <span class="tag bg-surface text-muted border border-border">Datos</span>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle"><i class="fa-brands fa-instagram"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Contenido para redes sociales</h3>
+            <p class="text-sm text-muted leading-relaxed">Generá publicaciones para Instagram o Facebook con AI: texto, hashtags y variantes listas para publicar.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Marketing</span>
+          <span class="tag bg-surface text-muted border border-border">Redes</span>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle"><i class="fa-solid fa-file-pdf"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Lectura automática de documentos</h3>
+            <p class="text-sm text-muted leading-relaxed">Facturas, remitos o contratos: la AI extrae los datos clave y los carga en tu sistema sin que lo hagas vos.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Admin</span>
+          <span class="tag bg-surface text-muted border border-border">Contabilidad</span>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle"><i class="fa-solid fa-calendar-check"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Agenda y turnos online</h3>
+            <p class="text-sm text-muted leading-relaxed">Tus clientes reservan, reciben recordatorio automático y cancelan sin que vos intervengas. Menos no-shows.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Turnos</span>
+          <span class="tag bg-surface text-muted border border-border">Servicios</span>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <div class="flex items-start gap-4">
+          <div class="icon-circle"><i class="fa-solid fa-boxes-stacked"></i></div>
+          <div>
+            <h3 class="font-bold text-dark mb-1">Control de stock automático</h3>
+            <p class="text-sm text-muted leading-relaxed">Recibí alertas cuando un producto está por agotarse. El sistema lleva el seguimiento, vos solo comprás.</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+          <span class="tag bg-surface text-muted border border-border">Inventario</span>
+          <span class="tag bg-surface text-muted border border-border">Comercios</span>
+        </div>
+      </div>
+
+      <!-- 9 — CTA -->
+      <div class="card bg-primary rounded-2xl p-6 fade-in flex flex-col justify-between">
+        <div>
+          <h3 class="font-bold text-white text-lg mb-2">¿Tenés algo en mente?</h3>
+          <p class="text-white/80 text-sm leading-relaxed">Contanos qué proceso te consume más tiempo y te decimos si se puede automatizar.</p>
+        </div>
+        <a href="#contacto" class="mt-5 inline-block bg-white text-primary font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-surface transition-colors text-center">
+          Hablemos →
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── PROYECTOS ─────────────────────────────────────────── -->
+<section id="proyectos" class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-12 fade-in">
+      <span class="tag bg-primary/10 text-primary mb-3">Proyectos</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Lo que construimos</h2>
+      <p class="text-muted text-lg max-w-xl mx-auto">Soluciones reales para problemas concretos.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <div class="card bg-surface rounded-2xl p-6 border border-border fade-in">
+        <div class="icon-circle mb-4"><i class="fa-solid fa-comments"></i></div>
+        <h3 class="font-bold text-dark mb-2">Asistente de Soporte AI (RAG)</h3>
+        <p class="text-sm text-muted leading-relaxed">Responde consultas frecuentes e internas usando la base documental del negocio. Aprende de tus propios archivos.</p>
+      </div>
+
+      <div class="card bg-surface rounded-2xl p-6 border border-border fade-in">
+        <div class="icon-circle mb-4"><i class="fa-solid fa-file-lines"></i></div>
+        <h3 class="font-bold text-dark mb-2">Automatización de Reportes Semanales</h3>
+        <p class="text-sm text-muted leading-relaxed">Consolida datos, genera PDFs y los envía por email o Slack sin intervención manual.</p>
+      </div>
+
+      <div class="card bg-surface rounded-2xl p-6 border border-border fade-in">
+        <div class="icon-circle mb-4"><i class="fa-solid fa-tags"></i></div>
+        <h3 class="font-bold text-dark mb-2">Clasificador de Emails y Tickets</h3>
+        <p class="text-sm text-muted leading-relaxed">Etiquetado automático, asignación de prioridad y derivación por intención del mensaje.</p>
+      </div>
+
+      <div class="card bg-surface rounded-2xl p-6 border border-border fade-in">
+        <div class="icon-circle mb-4"><i class="fa-solid fa-file-pdf"></i></div>
+        <h3 class="font-bold text-dark mb-2">Extracción de datos de PDFs</h3>
+        <p class="text-sm text-muted leading-relaxed">Lee facturas y contratos y carga los campos relevantes directo en tu sistema. Sin tipear.</p>
+      </div>
+
+      <div class="card bg-surface rounded-2xl p-6 border border-border fade-in">
+        <div class="icon-circle mb-4"><i class="fa-solid fa-pen-nib"></i></div>
+        <h3 class="font-bold text-dark mb-2">Generador de propuestas comerciales</h3>
+        <p class="text-sm text-muted leading-relaxed">Crea borradores con plantillas, tono y precios por servicio en segundos.</p>
+      </div>
+
+      <div class="card bg-surface rounded-2xl p-6 border border-border fade-in">
+        <div class="icon-circle mb-4"><i class="fa-solid fa-gauge-high"></i></div>
+        <h3 class="font-bold text-dark mb-2">Plataforma de Optimización Operativa</h3>
+        <p class="text-sm text-muted leading-relaxed">Orquesta workflows (CRM + hojas + APIs), monitorea KPIs, auditoría de cambios y panel de control completo.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── RESULTADOS ─────────────────────────────────────────── -->
+<section id="resultados" class="py-20 bg-primary">
+  <div class="max-w-5xl mx-auto px-5">
+    <div class="text-center mb-12 fade-in">
+      <span class="tag bg-white/20 text-white mb-3">Resultados</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Números que hablan</h2>
+      <p class="text-white/70 text-lg">Lo que construimos junto a nuestros clientes.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+      <div class="count-up bg-white/10 border border-white/20 rounded-2xl p-8">
+        <p class="text-5xl font-black text-white mb-2" data-target="77" data-prefix="" data-suffix="">0</p>
+        <p class="text-white/80 font-medium">Clientes activos</p>
+      </div>
+      <div class="count-up bg-white/10 border border-white/20 rounded-2xl p-8">
+        <p class="text-5xl font-black text-white mb-2" data-target="12400" data-prefix="+" data-suffix="">0</p>
+        <p class="text-white/80 font-medium">Personas alcanzadas</p>
+      </div>
+      <div class="count-up bg-white/10 border border-white/20 rounded-2xl p-8">
+        <p class="text-5xl font-black text-white mb-2" data-target="43" data-prefix="+" data-suffix="">0</p>
+        <p class="text-white/80 font-medium">Herramientas creadas</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── RESEÑAS ────────────────────────────────────────────── -->
+<section id="resenas" class="py-20 bg-surface">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-12 fade-in">
+      <span class="tag bg-primary/10 text-primary mb-3">Reseñas</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-3">Lo que dicen quienes ya lo viven</h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-5">
+
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <p class="stars text-lg mb-3">★★★★★</p>
+        <p class="text-dark leading-relaxed mb-5">"Automatizamos tareas que nos llevaban horas. El cambio se notó desde la primera semana."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">M</div>
+          <div>
+            <p class="font-semibold text-dark text-sm">María G.</p>
+            <p class="text-muted text-xs">Operaciones</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <p class="stars text-lg mb-3">★★★★★</p>
+        <p class="text-dark leading-relaxed mb-5">"Las propuestas salen en minutos y con mejor consistencia. Ganamos velocidad sin perder calidad."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">J</div>
+          <div>
+            <p class="font-semibold text-dark text-sm">Julián P.</p>
+            <p class="text-muted text-xs">Comercial</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <p class="stars text-lg mb-3">★★★★★</p>
+        <p class="text-dark leading-relaxed mb-5">"La extracción de datos de PDFs nos redujo errores y aceleró el cierre mensual. Impresionante."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">L</div>
+          <div>
+            <p class="font-semibold text-dark text-sm">Laura S.</p>
+            <p class="text-muted text-xs">Administración</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-white rounded-2xl p-6 border border-border fade-in">
+        <p class="stars text-lg mb-3">★★★★★</p>
+        <p class="text-dark leading-relaxed mb-5">"Excelente criterio para convertir ideas en herramientas concretas y medibles. Muy recomendable."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">N</div>
+          <div>
+            <p class="font-semibold text-dark text-sm">Nicolás R.</p>
+            <p class="text-muted text-xs">Producto</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── CONTACTO ───────────────────────────────────────────── -->
+<section id="contacto" class="py-20 bg-white">
+  <div class="max-w-2xl mx-auto px-5">
+    <div class="text-center mb-10 fade-in">
+      <span class="tag bg-primary/10 text-primary mb-3">Contacto</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-3">Hablemos</h2>
+      <p class="text-muted text-lg leading-relaxed">
+        Contanos qué querés optimizar y te respondemos con un plan inicial. Sin compromiso.
+      </p>
+      <a href="mailto:soluway.group@allaria.com" class="text-primary font-medium hover:underline text-sm mt-2 inline-block">
+        <i class="fa-solid fa-envelope mr-1"></i>soluway.group@allaria.com
+      </a>
+    </div>
+
+    <!-- Form via Formspree — reemplazá YOUR_FORM_ID con tu ID de formspree.io -->
+    <form
+      action="https://formspree.io/f/xbdzyqjd"
+      method="POST"
+      class="bg-surface rounded-2xl p-8 border border-border fade-in"
+      id="contact-form"
+    >
+      <div class="grid sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-dark mb-1.5">Nombre *</label>
+          <input
+            type="text" name="nombre" required
+            placeholder="Tu nombre"
+            class="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white transition"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-dark mb-1.5">Email *</label>
+          <input
+            type="email" name="email" required
+            placeholder="tu@email.com"
+            class="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white transition"
+          />
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-dark mb-1.5">Empresa / Negocio</label>
+        <input
+          type="text" name="empresa"
+          placeholder="Nombre de tu negocio (opcional)"
+          class="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white transition"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-dark mb-1.5">¿Qué querés optimizar? *</label>
+        <textarea
+          name="mensaje" required rows="4"
+          placeholder="Contanos qué proceso te consume más tiempo o qué te gustaría automatizar…"
+          class="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white transition resize-none"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-primary text-white font-semibold py-3.5 rounded-full hover:bg-accent transition-colors text-base"
+        id="submit-btn"
+      >
+        Solicitar consulta gratis
+      </button>
+
+      <div id="form-success" class="hidden mt-4 text-center text-primary font-medium text-sm">
+        <i class="fa-solid fa-circle-check mr-1"></i> ¡Mensaje enviado! Te respondemos en menos de 24 hs.
+      </div>
+      <div id="form-error" class="hidden mt-4 text-center text-red-500 font-medium text-sm">
+        Algo salió mal. Escribinos directamente a soluway.group@allaria.com
+      </div>
+    </form>
+  </div>
+</section>
+
+
+<!-- ─── FOOTER ─────────────────────────────────────────────── -->
+<footer class="bg-dark text-white/70 py-12">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="grid sm:grid-cols-3 gap-8 mb-8">
+
+      <div>
+        <img src="assets/logo.png" alt="Soluway" class="h-7 w-auto mb-3 brightness-0 invert" />
+        <p class="text-sm leading-relaxed">AI y automatización para negocios que quieren crecer sin complicarse.</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-3">Navegación</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#inicio"         class="hover:text-white transition-colors">Inicio</a></li>
+          <li><a href="#nosotros"       class="hover:text-white transition-colors">Quiénes somos</a></li>
+          <li><a href="#posibilidades"  class="hover:text-white transition-colors">Posibilidades</a></li>
+          <li><a href="#proyectos"      class="hover:text-white transition-colors">Proyectos</a></li>
+          <li><a href="#contacto"       class="hover:text-white transition-colors">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-3">Contacto</h4>
+        <p class="text-sm mb-2">
+          <i class="fa-solid fa-envelope mr-2 text-primary"></i>
+          <a href="mailto:soluway.group@allaria.com" class="hover:text-white transition-colors">soluway.group@allaria.com</a>
+        </p>
+        <div class="mt-4 flex gap-3">
+          <a href="#contacto" class="bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-accent transition-colors">Hablemos</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+      <p>&copy; 2025 Soluway. Todos los derechos reservados.</p>
+      <div class="flex gap-4">
+        <a href="#terminos"  onclick="showLegal('terminos')"  class="hover:text-white transition-colors cursor-pointer">Términos y condiciones</a>
+        <a href="#privacidad" onclick="showLegal('privacidad')" class="hover:text-white transition-colors cursor-pointer">Privacidad</a>
+        <a href="#cookies"   onclick="showLegal('cookies')"   class="hover:text-white transition-colors cursor-pointer">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ─── LEGAL MODAL ─────────────────────────────────────────── -->
+<div id="legal-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full p-8 max-h-[80vh] overflow-y-auto relative">
+    <button onclick="closeLegal()" class="absolute top-4 right-4 text-muted hover:text-dark">
+      <i class="fa-solid fa-xmark text-xl"></i>
+    </button>
+    <h3 id="legal-title" class="font-bold text-dark text-xl mb-4"></h3>
+    <div id="legal-content" class="text-sm text-muted leading-relaxed space-y-3"></div>
+  </div>
+</div>
+
+
+<!-- ─── SCROLL TOP ──────────────────────────────────────────── -->
+<div id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fa-solid fa-arrow-up text-sm"></i>
+</div>
+
+
+<!-- ─── SCRIPTS ────────────────────────────────────────────── -->
+<script>
+  // ── Hamburger menu ──────────────────────────────────────────
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    document.getElementById('mobile-menu').classList.toggle('hidden', !menuOpen);
+  }
+  function closeMenu() {
+    menuOpen = false;
+    document.getElementById('mobile-menu').classList.add('hidden');
+  }
+
+  // ── Intersection Observer: fade-in + counters ────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── Counter animation ─────────────────────────────────────────
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const prefix = el.dataset.prefix || '';
+    const duration = 1800;
+    const step = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = prefix + Math.floor(current).toLocaleString('es-AR');
+      if (current >= target) clearInterval(timer);
+    }, 16);
+  }
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        e.target.querySelectorAll('[data-target]').forEach(animateCounter);
+        counterObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.count-up').forEach(el => counterObserver.observe(el));
+
+  // ── Scroll top button ──────────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+  });
+
+  // ── Contact form (Formspree) ───────────────────────────────────
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Enviando…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        document.getElementById('form-success').classList.remove('hidden');
+        form.reset();
+      } else {
+        document.getElementById('form-error').classList.remove('hidden');
+      }
+    } catch {
+      document.getElementById('form-error').classList.remove('hidden');
+    } finally {
+      btn.textContent = 'Solicitar consulta gratis';
+      btn.disabled = false;
+    }
+  });
+
+  // ── Legal modal ────────────────────────────────────────────────
+  const legalContent = {
+    terminos: {
+      title: 'Términos y Condiciones',
+      content: `
+        <p>El uso de este sitio implica la aceptación de estos términos.</p>
+        <p>El contenido es informativo y puede cambiar sin aviso previo. Soluway no garantiza resultados específicos; estos dependen del contexto y las particularidades de cada cliente.</p>
+        <p>Todos los materiales, textos y desarrollos son propiedad de Soluway salvo indicación contraria.</p>
+        <p>Ante consultas, escribir a <strong>soluway.group@allaria.com</strong></p>
+      `
+    },
+    privacidad: {
+      title: 'Política de Privacidad',
+      content: `
+        <p>Podemos recopilar datos que nos enviés (nombre, email, mensaje) para responder consultas y coordinar reuniones.</p>
+        <p>No vendemos ni compartimos datos con terceros.</p>
+        <p>Podés solicitar acceso, modificación o eliminación de tus datos escribiendo a <strong>soluway.group@allaria.com</strong></p>
+        <p>Los datos se almacenan de forma segura y solo se utilizan con el fin por el que fueron enviados.</p>
+      `
+    },
+    cookies: {
+      title: 'Política de Cookies',
+      content: `
+        <p>Podemos usar cookies técnicas y de analítica para mejorar la experiencia y medir el tráfico del sitio.</p>
+        <p>No utilizamos cookies de terceros con fines publicitarios.</p>
+        <p>Podés gestionar o deshabilitar las cookies desde la configuración de tu navegador sin que esto afecte la funcionalidad principal del sitio.</p>
+      `
+    }
+  };
+
+  function showLegal(type) {
+    const modal = document.getElementById('legal-modal');
+    document.getElementById('legal-title').textContent = legalContent[type].title;
+    document.getElementById('legal-content').innerHTML = legalContent[type].content;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLegal() {
+    const modal = document.getElementById('legal-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  // Close modal on backdrop click
+  document.getElementById('legal-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeLegal();
+  });
+</script>
+
+</body>
+</html>
